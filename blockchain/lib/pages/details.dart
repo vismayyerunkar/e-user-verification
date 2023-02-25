@@ -434,7 +434,7 @@ class _DetailsState extends State<Details> {
                           _date.text,
                           _addline1.text,
                           _addline2.text,
-                          stateValue,
+                          //stateValue,
                           _pincode.text);
                       print(stateValue);
                       Navigator.pushNamed(context, '/picUpload');
