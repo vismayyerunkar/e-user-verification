@@ -193,7 +193,7 @@ class _LoginPageState extends State<LoginPage> {
           ),
           Center(
             child: FormHelper.submitButton("Send OTP", () {
-              Navigator.pushNamed(context, '/home');
+              Navigator.pushNamed(context, '/otp');
             },
                 btnColor: HexColor("#283b71"),
                 borderRadius: 10,

@@ -1,7 +1,43 @@
 import express from "express";
 import userDetailsModel from "../models/userDetails.js";
+import otpModel from "../models/otp.js";
+import Twilio from 'twilio';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const router = express.Router();
+
+
+
+const client = new Twilio(process.env.accountSid, process.env.authToken);
+
+
+
+const sendOTP = async (number) =>{
+    const randomOtp = Math.floor(100000 + Math.random() * 900000);
+
+    client.messages.create({
+        body: `Your E-verification OTP is ${randomOtp}. OTP will expire in 5 minutes.`,
+        from: process.env.senderContact,
+        to: number
+    }).then(async (message) => {
+        console.log("otp sent successfull with id : " , message.sid);
+
+        // Save the OTP in a database 
+        const otp = new otpModel({
+            contactNo:number,
+            otp:randomOtp
+        });
+        await otp.save();
+        return true;
+
+    }).catch(error =>{
+        console.error(error)
+        return false;
+    });
+        
+
+}
 
 router.post("/register",async (req,res)=>{
     /*
@@ -17,6 +53,7 @@ router.post("/register",async (req,res)=>{
 
     const data = req.body;
     console.log(data);
+
     const {adhaarNumber,firstname,middlename,lastname,dob,add1,add2,pincode,country,state,adharpic,userpic,phoneNumber} = data;
     
     const entry = new userDetailsModel({
@@ -38,13 +75,45 @@ router.post("/register",async (req,res)=>{
     res.json({"status":201,"message":"User registered successfully"});
 });
 
-router.post("/otp/verify",(req,res)=>{
+router.post("/otp/verify",async (req,res)=>{
     // return if the otp is correct on not 
+
+    const {otp,adhaarNumber} = req.body;
+
+    // once the frontend is readty check is the contact number is getting correctly
+    const user = userDetailsModel.find({
+        adhaarNumber:adhaarNumber
+    });
+
+    const contactNo = user[0].contactNo;
+
+    const data = await otpModel.find({
+        'contactNo':contactNo
+    });
+    
+    const dbOtp = data[0].otp;
+    if(dbOtp === otp){
+        res.json({
+            statusCode:200,
+            messgae:"Otp verified"
+        });
+    }else{
+        res.json({
+            statusCode:400,
+            message:"Invalid Otp"
+        });
+    }
 
 });
 
+router.get("/testotp",async (req,res)=>{
+    // sendOTP('+919284738002');
+    // const otps = await otpModel.find();
+    // console.log(otps)
+    res.json({status : "otp send success"});
+})
 
-router.post("/login",(req,res)=>{
+router.post("/login",async (req,res)=>{
     /*
 
     1) for login the user will give his/her adhar number
@@ -55,13 +124,28 @@ router.post("/login",(req,res)=>{
     */
     // store the users data in mongodb
 
-    const data = req.body;
-    console.log(data);
+    const {adhaarNumber} = req.body;
+    const user = userDetailsModel.find({
+        adhaarNumber:adhaarNumber
+    });
+    
+    const OtpStatus = await sendOTP(user[0].contactNo);
+
+    if(OtpStatus){
+        res.json({
+            statusCode:200,
+            message:"OTP sent successfully"
+        })
+    }else{
+        res.json({
+            statusCode:400,
+            message:"Failed to send otp"
+        })
+    }
     
 
     // create users account 
 });
-
 
 router.get("/check",(req,res) => {
     userDetailsModel.find().then((res)=>{

@@ -1,6 +1,7 @@
 import 'package:blockchain/pages/details.dart';
 import 'package:blockchain/pages/home.dart';
 import 'package:blockchain/pages/login.dart';
+import 'package:blockchain/pages/otpScreen.dart';
 import 'package:blockchain/pages/picUpload.dart';
 import 'package:flutter/material.dart';
 
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
         '/home': (context) => const HomePage(),
         '/details': (context) => Details(),
         '/picUpload': (context) => PicUpload(),
+        '/otp': (context) => OTPScreen(),
       },
     );
   }

@@ -40,7 +40,7 @@ class _DetailsState extends State<Details> {
     print("executed");
     if (_adhaarNo == "") return;
     String ip = "192.168.142.184";
-    var url = Uri.parse('http://192.168.0.106:5000/api/auth/register');
+    var url = Uri.parse('http://192.168.0.105:5000/api/auth/register');
 
     var res = await http.post(url, body: {
       'adhaarNumber': _adhaarNo,
@@ -54,6 +54,7 @@ class _DetailsState extends State<Details> {
       //'state': stateValue,
       'pincode': _pincode
     });
+    
     if (res.statusCode == 200) {
       print('Data sent successfully!');
     } else {
