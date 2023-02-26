@@ -2,15 +2,14 @@ import express from "express";
 import userDetailsModel from "../models/userDetails.js";
 import otpModel from "../models/otp.js";
 import Twilio from 'twilio';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const router = express.Router();
 
 
 
-const accountSid = 'ACc42527f23e0b0f2456829d0881134d0a';
-const authToken = '14ee2761448174476400a781bec6a450';
-const senderContact = "+12762925503";
-const client = new Twilio(accountSid, authToken);
+const client = new Twilio(process.env.accountSid, process.env.authToken);
 
 
 
@@ -19,7 +18,7 @@ const sendOTP = async (number) =>{
 
     client.messages.create({
         body: `Your E-verification OTP is ${randomOtp}. OTP will expire in 5 minutes.`,
-        from: senderContact,
+        from: process.env.senderContact,
         to: number
     }).then(async (message) => {
         console.log("otp sent successfull with id : " , message.sid);
