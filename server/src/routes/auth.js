@@ -17,6 +17,7 @@ router.post("/register",async (req,res)=>{
 
     const data = req.body;
     console.log(data);
+
     const {adhaarNumber,firstname,middlename,lastname,dob,add1,add2,pincode,country,state,adharpic,userpic,phoneNumber} = data;
     
     const entry = new userDetailsModel({
@@ -61,7 +62,6 @@ router.post("/login",(req,res)=>{
 
     // create users account 
 });
-
 
 router.get("/check",(req,res) => {
     userDetailsModel.find().then((res)=>{
