@@ -5,10 +5,58 @@ import mongoose from 'mongoose';
 
 const userDetails = mongoose.Schema({
     // other details is to be included
-    
-    contactNo:{
-        type:Number,
+   
+    adhaarNumber:{
+        type:String,
         required:true
+    },
+    firstname:{
+        type:String,
+        required:false
+    },
+    middlename:{
+        type:String,
+        required:false
+    },
+    lastname:{
+        type:String,
+        required:false
+    },
+    dob:{
+        type:String,
+        required:false
+    },
+    address_1:{
+        type:String,
+        required:false
+    },  
+    address_2:{
+        type:String,
+        required:false
+    },    
+    contactNo:{
+        type:String,
+        required:false // temporary
+    },
+    pincode:{
+        type:Number,
+        required:false
+    },    
+    country:{
+        type:Number,
+        required:false
+    },
+    state:{
+        type:Number,
+        required:false
+    },    
+    adhar_pic:{
+        type:Number,
+        required:false // temporary
+    },
+    user_pic:{
+        type:Number,
+        required:false // temporary
     },
     createdAt:{
         type: Date,

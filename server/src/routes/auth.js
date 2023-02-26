@@ -1,8 +1,9 @@
 import express from "express";
+import userDetailsModel from "../models/userDetails.js";
 
 const router = express.Router();
 
-router.post("/register",(req,res)=>{
+router.post("/register",async (req,res)=>{
     /*
         1) while registering the user will upload the data which will contain his data along with adharnumber and phonenumber
         2) we will check if the adharumber is valid and it is authentic and then we will check that it is not regstered already
@@ -16,7 +17,25 @@ router.post("/register",(req,res)=>{
 
     const data = req.body;
     console.log(data);
-    const {adhaarNumber,firstname,middlename,lastname,dob,add1,add2,pincode,country,state,adharpic,userpic} = data;
+
+    const {adhaarNumber,firstname,middlename,lastname,dob,add1,add2,pincode,country,state,adharpic,userpic,phoneNumber} = data;
+    
+    const entry = new userDetailsModel({
+        adhaarNumber:adhaarNumber,
+        firstname:firstname,
+        middlename:middlename,
+        lastname:lastname,
+        dob:dob,
+        address_1:add1,
+        address_2:add2,
+        contactNo:phoneNumber,
+        pincode:pincode,
+        // country:country,
+        // state:state
+    });
+
+    await entry.save().then((res))
+    
     res.json({"status":201,"message":"User registered successfully"});
 });
 
@@ -44,4 +63,12 @@ router.post("/login",(req,res)=>{
     // create users account 
 });
 
+router.get("/check",(req,res) => {
+    userDetailsModel.find().then((res)=>{
+        console.log(res);
+    }).catch((err)=>{
+        console.log(err);
+    });
+
+})
 export default router;

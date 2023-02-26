@@ -20,7 +20,8 @@ app.get('/check',(req,res)=>{
 })
 
 const PORT = 5000;
-const CONNECTION_URL = 'mongodb+srv://temp:temp123@cluster0.3fkx0wm.mongodb.net/project-db?retryWrites=true&w=majority'
+// const CONNECTION_URL = 'mongodb+srv://temp:temp123@cluster0.3fkx0wm.mongodb.net/project-db?retryWrites=true&w=majority'
+const CONNECTION_URL = 'mongodb+srv://vismay:password1111@cluster0.3fkx0wm.mongodb.net/project-db?retryWrites=true&w=majority'
 mongoose.set('strictQuery', false);
 
 const main = async () =>{
@@ -41,11 +42,3 @@ const main = async () =>{
 }
 
 main().catch(console.error);
-
-
-
-
-
-
-
-
