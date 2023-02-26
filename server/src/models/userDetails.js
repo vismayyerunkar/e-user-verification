@@ -5,7 +5,6 @@ import mongoose from 'mongoose';
 
 const userDetails = mongoose.Schema({
     // other details is to be included
-   
     adhaarNumber:{
         type:String,
         required:true
