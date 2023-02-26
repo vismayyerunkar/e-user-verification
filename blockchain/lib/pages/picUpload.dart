@@ -19,6 +19,7 @@ class PicUpload extends StatefulWidget {
   State<PicUpload> createState() => _PicUploadState();
 }
 
+
 class _PicUploadState extends State<PicUpload> {
   File? _image;
   PickedFile? _pickedFile;
@@ -49,11 +50,12 @@ class _PicUploadState extends State<PicUpload> {
     var stream = http.ByteStream(_image!.openRead());
     stream.cast();
     var length = await _image!.length();
-    var uri = Uri.parse('http://192.168.0.106:5000/api/auth/register');
+    var uri = Uri.parse('http://192.168.0.105:5000/api/auth/register');
     var req = http.MultipartRequest('POST', uri);
     var multipart = http.MultipartFile('_image', stream, length);
     req.files.add(multipart);
     var res = await req.send();
+    
     if (res.statusCode == 200) {
       print('images uploaded');
     } else {

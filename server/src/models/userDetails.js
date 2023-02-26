@@ -7,7 +7,7 @@ const userDetails = mongoose.Schema({
     // other details is to be included
     adhaarNumber:{
         type:String,
-        required:true
+        required:false
     },
     firstname:{
         type:String,
