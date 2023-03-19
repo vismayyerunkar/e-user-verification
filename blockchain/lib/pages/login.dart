@@ -1,10 +1,10 @@
+import 'package:blockchain/pages/otpScreen.dart';
+import 'package:blockchain/utils/colors.dart';
+import 'package:blockchain/utils/functions.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:snippet_coder_utils/FormHelper.dart';
-import 'package:snippet_coder_utils/ProgressHUD.dart';
-import 'package:snippet_coder_utils/hex_color.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -14,31 +14,41 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  bool isApiCallProcess = false;
-  bool hidePassword = true;
-  GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
-  String? username;
-  String? password;
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  TextEditingController adhaarNumber = TextEditingController();
+  FocusNode myFocusNode = new FocusNode();
+
+  void _submitForm() {
+    if (_formKey.currentState!.validate()) {
+      final text = adhaarNumber.text;
+      if (text.length == 12) {
+        // Navigate to another page
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const OTPScreen()),
+        );
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    adhaarNumber.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
-        body: ProgressHUD(
-          inAsyncCall: isApiCallProcess,
-          key: UniqueKey(),
-          opacity: 0.3,
-          child: Form(
-            key: globalFormKey,
-            child: _loginUI(context),
-          ),
-        ),
+        body: loginUI(context),
       ),
     );
   }
 
-  Widget _loginUI(BuildContext context) {
+  Widget loginUI(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -72,22 +82,28 @@ class _LoginPageState extends State<LoginPage> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: Form(
+              key: _formKey,
               child: TextFormField(
+                focusNode: myFocusNode,
+                controller: adhaarNumber,
+                keyboardType: TextInputType.number,
                 inputFormatters: [
                   LengthLimitingTextInputFormatter(12),
                   FilteringTextInputFormatter.digitsOnly
                 ],
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter 12 numbers';
+                  }
+                  if (value.length != 12) {
+                    return 'Please enter exactly 12 numbers';
+                  }
+                  return null;
+                },
                 decoration: InputDecoration(
                   labelText: "Adhaar Number",
-                  labelStyle: MaterialStateTextStyle.resolveWith(
-                      (Set<MaterialState> states) {
-                    final Color color = states.contains(MaterialState.error)
-                        ? Theme.of(context).colorScheme.error
-                        : Colors.blue;
-                    return TextStyle(
-                      color: color,
-                    );
-                  }),
+                  labelStyle: TextStyle(
+                      color: myFocusNode.hasFocus ? blueColor : blueColor),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(40),
                     borderSide: const BorderSide(
@@ -102,102 +118,39 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                 ),
-                autovalidateMode: AutovalidateMode.always,
               ),
             ),
           ),
-          // FormHelper.inputFieldWidget(context, "username", "Adhaar Number",
-          //     (onValidateVal) {
-          //   if (onValidateVal.isEmpty) {
-          //     return "Username can't be empty. ";
-          //   }
-          //   return null;
-          // },
-          //     (onSavedVal) => {
-          //           username = onSavedVal,
-          //         },
-          //     borderFocusColor: const Color.fromARGB(255, 23, 76, 119),
-          //     showPrefixIcon: true,
-          //     prefixIcon: const Icon(Icons.person),
-          //     prefixIconColor: const Color.fromARGB(255, 23, 76, 119),
-          //     borderColor: const Color.fromARGB(255, 23, 76, 119),
-          //     textColor: const Color.fromARGB(255, 23, 76, 119),
-          //     hintColor:
-          //         const Color.fromARGB(255, 23, 76, 119).withOpacity(0.7),
-          //     borderRadius: 10),
-          // password
-          // Padding(
-          //   padding: const EdgeInsets.only(top: 10),
-          //   child: FormHelper.inputFieldWidget(
-          //     context,
-          //     prefixIcon: const Icon(Icons.key),
-          //     "password",
-          //     "Password",
-          //     (onValidateVal) {
-          //       if (onValidateVal.isEmpty) {
-          //         return "Password can't be empty. ";
-          //       }
-          //       return null;
-          //     },
-          //     (onSavedVal) => {
-          //       password = onSavedVal,
-          //     },
-          //     borderFocusColor: const Color.fromARGB(255, 23, 76, 119),
-          //     showPrefixIcon: true,
-          //     prefixIconColor: const Color.fromARGB(255, 23, 76, 119),
-          //     borderColor: const Color.fromARGB(255, 23, 76, 119),
-          //     textColor: const Color.fromARGB(255, 23, 76, 119),
-          //     hintColor:
-          //         const Color.fromARGB(255, 23, 76, 119).withOpacity(0.7),
-          //     borderRadius: 10,
-          //     obscureText: hidePassword,
-          //     suffixIcon: IconButton(
-          //       color: const Color.fromARGB(255, 23, 76, 119),
-          //       onPressed: () {
-          //         setState(() {
-          //           hidePassword = !hidePassword;
-          //         });
-          //       },
-          //       icon: Icon(
-          //         hidePassword ? Icons.visibility_off : Icons.visibility,
-          //       ),
-          //     ),
-          //   ),
-          // ),
-          // Align(
-          //   alignment: Alignment.bottomRight,
-          //   child: Padding(
-          //     padding: const EdgeInsets.only(right: 25, top: 10),
-          //     child: RichText(
-          //       text: TextSpan(
-          //         style: const TextStyle(
-          //             color: Color.fromARGB(255, 142, 55, 55), fontSize: 14),
-          //         children: [
-          //           TextSpan(
-          //               text: 'Forget Password ?',
-          //               style: const TextStyle(
-          //                 color: Color.fromARGB(255, 23, 76, 119),
-          //                 decoration: TextDecoration.underline,
-          //               ),
-          //               recognizer: TapGestureRecognizer()
-          //                 ..onTap = () {
-          //                   print('Forget Password');
-          //                 })
-          //         ],
-          //       ),
-          //     ),
-          //   ),
-          // ),
+
           const SizedBox(
             height: 20,
           ),
           Center(
-            child: FormHelper.submitButton("Send OTP", () {
-              Navigator.pushNamed(context, '/otp');
-            },
-                btnColor: HexColor("#283b71"),
-                borderRadius: 10,
-                borderColor: Colors.transparent),
+            child: GestureDetector(
+              onTap: () {
+                _submitForm();
+                getReq(adhaarNumber.text);
+                // Navigator.pushNamed(context, '/otp');
+              },
+              child: Container(
+                height: 45,
+                width: 100,
+                decoration: const ShapeDecoration(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(4),
+                      ),
+                    ),
+                    color: blueColor),
+                child: Center(
+                  child: Text(
+                    'Send OTP',
+                    style:
+                        GoogleFonts.poppins(color: Colors.white, fontSize: 15),
+                  ),
+                ),
+              ),
+            ),
           ),
           const SizedBox(
             height: 20,

@@ -2,7 +2,6 @@ import 'package:blockchain/pages/details.dart';
 import 'package:blockchain/pages/home.dart';
 import 'package:blockchain/pages/login.dart';
 import 'package:blockchain/pages/otpScreen.dart';
-import 'package:blockchain/pages/picUpload.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -19,16 +18,16 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-          //primarySwatch: Colors.red,
+          // primarySwatch: Colors.red,
           ),
       //home: HomePage(),
       routes: {
         '/': (context) => const LoginPage(),
         //'/register': (context) => const RegisterPage(),
-        '/home': (context) => const HomePage(),
-        '/details': (context) => Details(),
-        '/picUpload': (context) => PicUpload(),
-        '/otp': (context) => OTPScreen(),
+        '/home': (context) => HomePage(),
+        '/details': (context) => const Details(),
+        //'/picUpload': (context) => PicUpload(),
+        '/otp': (context) => const OTPScreen(),
       },
     );
   }
