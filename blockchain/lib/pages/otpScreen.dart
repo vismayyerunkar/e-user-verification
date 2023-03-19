@@ -1,3 +1,5 @@
+import 'package:blockchain/pages/home.dart';
+import 'package:blockchain/utils/functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -12,8 +14,8 @@ class OTPScreen extends StatefulWidget {
 }
 
 class _OTPScreenState extends State<OTPScreen> {
-  TextEditingController phoneController = TextEditingController(text: "+91");
-  TextEditingController otpController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController otp = TextEditingController();
   bool otpVisibility = false;
   @override
   Widget build(BuildContext context) {
@@ -89,7 +91,7 @@ class _OTPScreenState extends State<OTPScreen> {
                     defaultPinTheme: defaultPinTheme,
                     submittedPinTheme: submittedPinTheme,
                     focusedPinTheme: focusedPinTheme,
-                    controller: otpController,
+                    controller: otp,
                     length: 6,
                     showCursor: true,
                   ),
@@ -99,7 +101,19 @@ class _OTPScreenState extends State<OTPScreen> {
                 ),
                 Center(
                   child: GestureDetector(
-                    onTap: () => Navigator.pushNamed(context, "/home"),
+                    // onTap: () => Navigator.of(context).pushReplacement(
+                    //   MaterialPageRoute(
+                    //     builder: (context) => HomePage(),
+                    //   ),
+                    // ),
+                    onTap: () {
+                      verifyOTP(otp.text);
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (context) => HomePage(),
+                        ),
+                      );
+                    },
                     child: Container(
                         width: 100,
                         height: 45,

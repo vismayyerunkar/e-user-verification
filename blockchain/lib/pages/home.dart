@@ -210,12 +210,18 @@
 //   }
 // }
 
+import 'package:blockchain/pages/login.dart';
+import 'package:blockchain/pages/scanner.dart';
+import 'package:blockchain/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  const HomePage({
+    super.key,
+  });
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -224,8 +230,125 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(child: Text('Welcome')),
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          title: Text(
+            'E-Verify',
+            style: GoogleFonts.poppins(fontSize: 20, color: blueColor),
+          ),
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          // ignore: prefer_const_literals_to_create_immutables
+          actions: [
+            Padding(
+              padding: EdgeInsets.only(right: 15),
+              child: IconButton(
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return SimpleDialog(
+                          title: const Text('Scan!'),
+                          children: [
+                            SimpleDialogOption(
+                              padding: const EdgeInsets.all(20),
+                              child: const Text('Scan a QR'),
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const QRViewExample()));
+                              },
+                            ),
+                            SimpleDialogOption(
+                              padding: const EdgeInsets.all(20),
+                              child: const Text('Logout'),
+                              onPressed: () {
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const LoginPage()));
+                              },
+                            ),
+                            SimpleDialogOption(
+                              padding: const EdgeInsets.all(20),
+                              child: const Text('Cancel'),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            )
+                          ],
+                        );
+                      });
+                },
+                icon: Icon(
+                  Icons.more_vert_outlined,
+                  color: blueColor,
+                ),
+              ),
+            )
+          ],
+        ),
+        body: Padding(
+          padding: const EdgeInsets.only(top: 20),
+          child: Column(
+            children: [
+              Center(
+                child: Container(
+                  height: 220,
+                  width: MediaQuery.of(context).size.width * 0.98,
+                  decoration: BoxDecoration(
+                      color: blueColor,
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Row(
+                    children: [
+                      Container(
+                        height: 170,
+                        width: 135,
+                        child: Image.network(
+                            'https://github.com/vamshi-exe/euforia/blob/main/IMG_20220315_111205.jpg?raw=true'),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 20),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Name: Ashish Sinha',
+                              style: GoogleFonts.poppins(
+                                  fontSize: 15, color: Colors.white),
+                            ),
+                            Text(
+                              'DOB: 21 NOV 2001',
+                              style: GoogleFonts.poppins(
+                                  fontSize: 15, color: Colors.white),
+                            ),
+                            Text(
+                              'Sex: Gay',
+                              style: GoogleFonts.poppins(
+                                  fontSize: 15, color: Colors.white),
+                            ),
+                            Text(
+                              'Add: PHCET Rasayani',
+                              style: GoogleFonts.poppins(
+                                  fontSize: 15, color: Colors.white),
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

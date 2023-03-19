@@ -49,11 +49,11 @@ const userDetails = mongoose.Schema({
         type:Number,
         required:false
     },    
-    adhar_pic:{
+    adhaar_image:{
         type:Number,
         required:false // temporary
     },
-    user_pic:{
+    user_image:{
         type:Number,
         required:false // temporary
     },

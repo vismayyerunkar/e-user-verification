@@ -114,6 +114,7 @@ router.post("/register",async (req,res)=>{
     console.log(data);
 
     const {adhaarNumber,firstname,middlename,lastname,dob,add1,add2,pincode,country,state,adharpic,userpic,phoneNumber} = data;
+    // const {adhaarNumber,firstname,middlename,lastname,dob,add1,add2,pincode,country,state,adhaarImage,userImage,phoneNumber} = data;
     
     const entry = new userDetailsModel({
         adhaarNumber:adhaarNumber,
@@ -125,6 +126,8 @@ router.post("/register",async (req,res)=>{
         address_2:add2,
         contactNo:phoneNumber,
         pincode:pincode,
+        adhaar_image:adhaarImage,
+        user_image:userImage,
         // country:country,
         // state:state
     });
