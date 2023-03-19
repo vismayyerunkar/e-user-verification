@@ -57,6 +57,11 @@ const userDetails = mongoose.Schema({
         type:Number,
         required:false // temporary
     },
+    isVerified:{
+        type:Boolean,
+        default:false,
+        required:false // temporary
+    },
     createdAt:{
         type: Date,
         default: new Date(),

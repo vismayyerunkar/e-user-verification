@@ -1,6 +1,7 @@
-const Registration = artifacts.require('Registration');
+const UserData = artifacts.require('../contracts/UserData.sol');
+
 
 module.exports = function(deployer){
-    deployer.deployer(Registration,{value:3000000000000000});
+    deployer.deploy(UserData);
 }
 
