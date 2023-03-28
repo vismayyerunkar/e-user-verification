@@ -3,7 +3,7 @@ import axios from 'axios'
 
 function Cards({ handleUser }) {
 
-  const [users, setUsers] = useState(null);
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
     axios.get("http://localhost:5000/api/auth/unverified-users").then((res) => {
@@ -19,7 +19,6 @@ function Cards({ handleUser }) {
         <h2>Unverified users</h2>
       </div>
       <div className='cards-holder'>
-
         {users ? users.map((user) => {
             return (
               <div key={user?._id} onClick={() => handleUser(user)} className='card'>

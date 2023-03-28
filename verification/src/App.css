@@ -2,6 +2,7 @@
     display:flex;
     flex-direction:column;
     overflow: hidden !important;
+    box-sizing:border-box !important;
 }
 
 body{
@@ -230,11 +231,16 @@ body{
     transform: scale(0.95);
 }
 
+.cards-holder::-webkit-scrollbar {
+    display: none;
+}
 
 .cards-holder{
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
+    overflow-y:scroll;
+    height:90%;
 }
 
 .card-img-holder{

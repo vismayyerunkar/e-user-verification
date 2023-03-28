@@ -7,10 +7,15 @@ const UserDetails = () => {
         <img src="https://rb.gy/lcvws8"/>
      </div>
 
-     <div><h4>Name </h4> : <span> asjdkadakda </span></div>
-     <div><h4>ContactNo</h4> : <span> 2i3u4o2u4 </span></div>
-     <div><h4>Address </h4> : <span> asjdkadakda </span></div>
-     <div><h4>Adhaar No</h4> : <span> 98749237924 </span></div>
+     <div><h3>Name </h3> : <span> John doe </span></div>
+     <div><h3>ContactNo</h3> : <span> 9900998877 </span></div>
+     <div><h3>Address </h3> : <span> Dummy address </span></div>
+     <div><h3>Adhaar No</h3> : <span> 887788778877 </span></div>
+
+    <div className="verification-holder">
+        <span className="user-verified">Verified</span>
+        {/* <span className="user-unverified">unverified</span> */}
+    </div>
     </div>
   )
 }

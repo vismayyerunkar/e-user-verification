@@ -4,7 +4,7 @@ import axios from 'axios';
 const CardDetails = ({clearUser,selectedUser}) => {
 
   const verifyUser = ()=>{
-    console.log("tring to verify")
+    console.log("trying to verify")
     axios.post("http://localhost:5000/api/auth/verify-user",{
       adhaarNumber:selectedUser.adhaarNumber
     }).then((res)=>{

@@ -6,9 +6,9 @@ import mongoose from "mongoose"
 const app = express();
 import { createServer } from 'http';
 import { Server } from "socket.io";
+import userDetailsModel from "./models/userDetails.js";
 const server = createServer(app);
 const io = new Server(server, { cors: { origin: '*' } });
-
 
 
 // main
@@ -21,22 +21,26 @@ app.use(bodyParser.urlencoded({limit:"30mb",extended:true}));
 // define routes
 app.use("/api/auth",registerRoutes);
 
-app.post('/verify-scan',(req,res)=>{
+app.post('/verify-scan',async (req,res)=>{
     const {id,adharnumber} = req;
-    console.log(adharnumber);
-    socket.broadcast.emit('newclientconnect',"dummy user data");
-    return
+    console.log(id);
+    // insted of geting the data from database get it from the blockchain
+    const user = await userDetailsModel.find({adhaarNumber:adharnumber});
+    io.to(id).emit('user-scanned',user[0]);
+    res.json({
+        status:200,
+        message:"User Scanned Success"
+    })
 });
 
 
 io.on('connection', (socket) => {
-    console.log('Connection established');
-
+    socket.join(socket.handshake.auth.UID);
+    console.log('User with id ', socket.id , " ",socket.handshake.auth.UID , " connected !");
     socket.on('disconnect', () => {
       console.log('Disconnected');
     });
 });      
-
 
 
 const PORT = 5000;

@@ -12,12 +12,14 @@ let UserData = new web3.eth.Contract(UserDataArtifact.abi,UserDataArtifact.netwo
 
 
 
+const GANACHE_ADDRESS = "0x290A8DFA4bd4F9Fe215b37290253312841262dfA"
+
 const getData = async ()=>{
     // const todoList = await UserData.deployed();
     // const taskCount = await UserData.methods;
     console.log('====================================');
     UserData.methods.userCount().call().then((res)=>{
-        console.log(res);
+        console.log("user count : " ,res);
     });
     // UserData.methods.addUser("bot","123").send({from:"0x96f4f3b7A9d38c71BF8eE5c9808261233A92db3a",gas:300000}).then((res)=>{
     //     console.log(res);
@@ -27,7 +29,6 @@ const getData = async ()=>{
     });
     console.log('====================================');
 }
-
 
 router.post('/verify-user',async (req,res)=>{
     const {adhaarNumber} = req.body;
@@ -48,7 +49,7 @@ router.post('/verify-user',async (req,res)=>{
         const contactNo = user.contactNo
         const pincode = user.pincode
 
-        UserData.methods.addUser(adhaarNumber,firstname,middlename,lastname,dob,address_1,address_2,contactNo,pincode,"dummy profile url ").send({from:"0x96f4f3b7A9d38c71BF8eE5c9808261233A92db3a",gas:300000}).then(async (res)=>{
+        UserData.methods.addUser(adhaarNumber,firstname,middlename,lastname,dob,address_1,address_2,contactNo,pincode,"dummy profile url ").send({from:GANACHE_ADDRESS,gas:300000}).then(async (res)=>{
             user.isVerified = true;
             await user.save();
             console.log(res);
@@ -180,6 +181,7 @@ router.post("/otp/verify",async (req,res)=>{
 
 
 router.post("/login",async (req,res)=>{
+    
     /*
 
     1) for login the user will give his/her adhar number
@@ -194,6 +196,7 @@ router.post("/login",async (req,res)=>{
     const user = await userDetailsModel.find({
         adhaarNumber:adhaarNumber
     });
+
 
     if(!user){
         res.json({
@@ -240,3 +243,6 @@ router.get('/unverified-users',async (req,res)=>{
 
 
 export default router;
+
+
+//change the module type to common then then truffle compile then truffle migrate

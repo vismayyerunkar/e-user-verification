@@ -1,15 +1,44 @@
 .App{
   display:flex;
+  flex-direction:column;
   align-items:center;
   justify-content:center;
   width:100vw;
   height:100vh;
+  background-color:#0e0a0a;
+  color:cyan;
+  border:5px solid cyan;
+  box-sizing:border-box;
 }
+.verification-holder{
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+
+.user-verified{
+  padding:10px;
+  padding-left:15px;
+  padding-right:15px;
+  background-color:green;
+  border-radius:8px;
+}
+
+.user-unverified{
+  padding:10px;
+  padding-left:15px;
+  padding-right:15px;
+  background-color:red;
+  border-radius:8px;
+}
+
 
 .user-details{
   width:50%;
   height:60%;
-  background-color:#1d1d1d;
+  background-color:#4a27bd;
   border-radius:5px;
   color:white;
   display:flex;
@@ -23,12 +52,16 @@
   align-items:center;
   /* justify-content:space-between; */
 }
-.user-details > div > h4{
+
+.user-details > div > h3{
   margin-right:20px;
+  color:cyan;
+
 }
 .user-details > div > span{
   margin-left:20px;
 }
+
 
 .img-holder{
   width:100%;
@@ -39,7 +72,7 @@
 }
 
 .img-holder > img{
-  width:200px;
+  width:150px;
   height:90%;
   background-color:white;
   border-radius:5px;
@@ -48,13 +81,14 @@
 .qr-scanner{
   width:50%;
   height:60%;
-  background-color:#1d1d1d;
+  background-color:#4a27bd;
   border-radius:5px;
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:center;
   color:#fff;
+  border-radius:10px;
 }
 
 
@@ -63,7 +97,7 @@
   .user-details{
     width:90%;
     height:60%;
-    background-color:#1d1d1d;
+    background-color:#4a27bd;
     border-radius:5px;
     display:flex;
     flex-direction:column;
@@ -74,7 +108,7 @@
   .qr-scanner{
     width:90%;
     height:60%;
-    background-color:#1d1d1d;
+    background-color:#4a27bd;
     border-radius:5px;
     display:flex;
     align-items:center;
@@ -90,7 +124,7 @@
   .user-details{
     width:70%;
     height:60%;
-    background-color:#1d1d1d;
+    background-color:#4a27bd;
     border-radius:5px;
     display:flex;
     flex-direction:column;
@@ -101,7 +135,7 @@
   .qr-scanner{
     width:70%;
     height:60%;
-    background-color:#1d1d1d;
+    background-color:#4a27bd;
     border-radius:5px;
     display:flex;
     align-items:center;
