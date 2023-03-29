@@ -21,21 +21,28 @@ app.use(bodyParser.urlencoded({limit:"30mb",extended:true}));
 // define routes
 app.use("/api/auth",registerRoutes);
 
-app.post('/verify-scan',async (req,res)=>{
-    const {id,adharnumber} = req;
-    console.log(id);
+app.post('/api/verify-scan',async (req,res)=>{
+    const {id,adhaarnumber} = req;
+    if(!adhaarnumber || !id) return res.json({
+        status:400,
+        message:"Data not provided"
+    })
+
+    console.log("Id : ", id + " adhaar : ",adhaarnumber);
     // insted of geting the data from database get it from the blockchain
     const user = await userDetailsModel.find({adhaarNumber:adharnumber});
     io.to(id).emit('user-scanned',user[0]);
     res.json({
         status:200,
         message:"User Scanned Success"
-    })
+    });
 });
+
 
 
 io.on('connection', (socket) => {
     socket.join(socket.handshake.auth.UID);
+    // if()
     console.log('User with id ', socket.id , " ",socket.handshake.auth.UID , " connected !");
     socket.on('disconnect', () => {
       console.log('Disconnected');

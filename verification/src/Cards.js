@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
+import { ThreeDots } from  'react-loader-spinner'
 
 function Cards({ handleUser }) {
 
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState(null);
 
   useEffect(() => {
     axios.get("http://localhost:5000/api/auth/unverified-users").then((res) => {
       console.log(res.data);
       setUsers(res.data);
+    }).catch((err)=>{
+      setUsers([]);
     })
   }, [])
 
@@ -23,15 +26,28 @@ function Cards({ handleUser }) {
             return (
               <div key={user?._id} onClick={() => handleUser(user)} className='card'>
                 <div className='card-img-holder'>
-                  <img src={user.profile_pic} alt="img" />
+                  <img src={user.user_image} alt="img" />
                 </div>
                 <div className='card-info'>
-                  <span>Name : {user.firstname + " " + user.lastname}</span>
-                  <span>Appy date : {new Date(user.createdAt).toLocaleDateString()}</span>
+                  <span className="card-info-data">
+                    <span>Name : {user.firstname + " " + user.lastname}</span>
+                    <span>Appy date : {new Date(user.createdAt).toLocaleDateString()}</span>
+                  </span>
+                  <span style={user?.isVerified ? {color:'#33ea76',backgroundColor:'#1cd17c68'} : {color:'red',backgroundColor:'#fd000056'}} className='verified-btn'>{ user?.isVerified ? "Verified" : "unverified"}</span>
+                  
                 </div>
               </div>
             )
-          }) : (<h3 style={{color:'white !important'}}>Loading..</h3>) }
+          }) : (<ThreeDots 
+            height="80" 
+            width="80" 
+            radius="9"
+            color="#fff" 
+            ariaLabel="three-dots-loading"
+            wrapperStyle={{}}
+            wrapperClassName=""
+            visible={true}
+            />) }
 
       </div>
     </div>

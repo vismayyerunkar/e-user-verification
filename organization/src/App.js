@@ -1,9 +1,8 @@
 import './App.css';
-import React,{useRef, useState,useEffect, useMemo} from 'react';
-import QRHolder from './QRHolder';
+import React,{useState,useEffect} from 'react';
 import UserDetails from './UserDetails';
 import io from 'socket.io-client'
-import QRCode from "react-qr-code";
+import {QRCode} from "react-qrcode-logo";
 
 const id = crypto.randomUUID();
 
@@ -40,11 +39,10 @@ function App() {
     return (
       <div className='qr-scanner'>
             <h3>Please Scan the QR code to verify</h3>
-        <QRCode value={id} />  
+            <QRCode value={id}/>  
       </div>
     )  
   }
-
 
   return (
     <div className="App">

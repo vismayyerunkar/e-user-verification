@@ -12,7 +12,7 @@ let UserData = new web3.eth.Contract(UserDataArtifact.abi,UserDataArtifact.netwo
 
 
 
-const GANACHE_ADDRESS = "0x290A8DFA4bd4F9Fe215b37290253312841262dfA"
+const GANACHE_ADDRESS = "0x495c38B96246024B750da376948936C4cBA09094"
 
 const getData = async ()=>{
     // const todoList = await UserData.deployed();
@@ -37,7 +37,7 @@ router.post('/verify-user',async (req,res)=>{
     const user = await userDetailsModel.findOne({
         adhaarNumber:adhaarNumber
     });
-
+    
     if(user){
         const adhaarNumber = user.adhaarNumber;
         const firstname = user.firstname
@@ -48,16 +48,22 @@ router.post('/verify-user',async (req,res)=>{
         const address_2 = user.address_2
         const contactNo = user.contactNo
         const pincode = user.pincode
+        const profile_pic = user.user_image
+        const adhaar_pic = user.adhaar_image;
 
-        UserData.methods.addUser(adhaarNumber,firstname,middlename,lastname,dob,address_1,address_2,contactNo,pincode,"dummy profile url ").send({from:GANACHE_ADDRESS,gas:300000}).then(async (res)=>{
+        UserData.methods.addUser(adhaarNumber,firstname,middlename,lastname,dob,address_1,address_2,contactNo,pincode,profile_pic,adhaar_pic).send({from:GANACHE_ADDRESS,gas:100000}).then(async (res)=>{
             user.isVerified = true;
             await user.save();
             console.log(res);
+        }).then(()=>{
             res.json({"status":200,"message":"User verified successfully"});
         }).catch((err)=>{
             console.log("error while adding data to the blockchain ",err);
             res.json({"status":401,"message":"Some error occured"});
         });
+
+        // res.json({"status":200,"message":"User verified successfully"});
+
     }
 });
 
@@ -69,7 +75,7 @@ router.post('/verify-user',async (req,res)=>{
 // });
 
 // const client = new Twilio(process.env.accountSid, process.env.authToken);
-const client = new Twilio('AC1f4a33e93ebd6884cc06fbe660a4e741',"d42be250d6f1ba9534946d9ac3e62865");
+const client = new Twilio('AC1f4a33e93ebd6884cc06fbe660a4e741',"76bd8fa6ba19e0324669959d23c65270");
 
 const sendOTP = async (number) =>{
     console.log("sending sms to : ",number)
@@ -114,8 +120,9 @@ router.post("/register",async (req,res)=>{
     const data = req.body;
     console.log(data);
 
-    const {adhaarNumber,firstname,middlename,lastname,dob,add1,add2,pincode,country,state,adharpic,userpic,phoneNumber} = data;
-    // const {adhaarNumber,firstname,middlename,lastname,dob,add1,add2,pincode,country,state,adhaarImage,userImage,phoneNumber} = data;
+    // const {adhaarNumber,firstname,middlename,lastname,dob,add1,add2,pincode,country,state,adharpic,userpic,phoneNumber} = data;
+    const {adhaarNumber,firstname,middlename,lastname,dob,add1,add2,pincode,country,state,adhaarImage,userImage,phoneNumber} = data;
+
     
     const entry = new userDetailsModel({
         adhaarNumber:adhaarNumber,
@@ -129,9 +136,13 @@ router.post("/register",async (req,res)=>{
         pincode:pincode,
         adhaar_image:adhaarImage,
         user_image:userImage,
-        // country:country,
-        // state:state
+        country:country,
+        state:state
     });
+
+    await userDetailsModel.find({}).then((res)=>{
+        console.log(res);
+    })
 
     await entry.save().then(async(res)=>{
         console.log("data saved successfully");
@@ -143,11 +154,11 @@ router.post("/register",async (req,res)=>{
 
 
 
-
 router.post("/otp/verify",async (req,res)=>{
     // return if the otp is correct on not 
 
     const {otp,adhaarNumber} = req.body;
+    console.log(otp, " ",adhaarNumber)
 
     // once the frontend is readty check if the contact number is getting correctly
     const user = await userDetailsModel.find({
@@ -176,8 +187,6 @@ router.post("/otp/verify",async (req,res)=>{
         });
     }
 });
-
-
 
 
 router.post("/login",async (req,res)=>{
@@ -232,17 +241,25 @@ router.post("/login",async (req,res)=>{
 
 
 
-
 router.get('/unverified-users',async (req,res)=>{
     
     const users = await userDetailsModel.find({
-        isVerified:false
+        // isVerified:false 
     })
     res.json(users);
 });
 
+router.get('/check',async (req,res)=>{
+    // await userDetailsModel.find({}).then((res)=>{
+    //     console.log(res);
+    // });
+
+    UserData.methods.getUser("123456789123").call().then((res)=>{
+        console.log(res);
+    });
+
+    res.send("done")
+});
 
 export default router;
-
-
 //change the module type to common then then truffle compile then truffle migrate

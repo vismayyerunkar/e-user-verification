@@ -10,6 +10,13 @@
   border:5px solid cyan;
   box-sizing:border-box;
 }
+
+/* Default qr */
+#react-qrcode-logo{
+  width:300px !important;
+  height:300px !important;
+}
+
 .verification-holder{
   width:100%;
   display:flex;
@@ -81,7 +88,7 @@
 .qr-scanner{
   width:50%;
   height:60%;
-  background-color:#4a27bd;
+  background-color:#1E1D21;
   border-radius:5px;
   display:flex;
   flex-direction:column;

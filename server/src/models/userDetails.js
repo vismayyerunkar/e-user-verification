@@ -38,23 +38,23 @@ const userDetails = mongoose.Schema({
         required:false // temporary
     },
     pincode:{
-        type:Number,
+        type:String,
         required:false
     },    
     country:{
-        type:Number,
+        type:String,
         required:false
     },
     state:{
-        type:Number,
+        type:String,
         required:false
     },    
     adhaar_image:{
-        type:Number,
+        type:String,
         required:false // temporary
     },
     user_image:{
-        type:Number,
+        type:String,
         required:false // temporary
     },
     isVerified:{
